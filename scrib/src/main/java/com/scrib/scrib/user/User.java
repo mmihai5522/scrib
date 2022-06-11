@@ -30,8 +30,9 @@ public class User {
     private String description;
     @Transient
     private Integer age;
-    @OneToMany(targetEntity = com.scrib.scrib.userRole.UserRole.class
-            ,cascade = CascadeType.ALL)
+    @OneToMany( targetEntity = UserRole.class
+            ,cascade = CascadeType.ALL,
+            fetch=FetchType.EAGER)
     @JoinColumn(name = "user_id"
             ,referencedColumnName = "id")
     private List<UserRole> userRole;
