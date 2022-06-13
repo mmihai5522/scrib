@@ -1,5 +1,6 @@
 package com.scrib.scrib.user;
 
+import com.scrib.scrib.article.Article;
 import com.scrib.scrib.userRole.UserRole;
 
 import javax.persistence.*;
@@ -36,7 +37,6 @@ public class User {
     @JoinColumn(name = "user_id"
             ,referencedColumnName = "id")
     private List<UserRole> userRole;
-
 
     public User(){}
 

@@ -19,17 +19,17 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAuthors() {
+    public List<User> getUsers() {
         return userService.getUser();
     }
 
     @PostMapping(path = "registration")
-    public void registerNewAuthor(@RequestBody User user){
+    public void registerNewUser(@RequestBody User user){
         userService.addNewUser(user);
     }
 
     @DeleteMapping(path = "{userId}")
-    public void deleteAuthor(@PathVariable("userId") Long authorId){
+    public void deleteUser(@PathVariable("userId") Long authorId){
         userService.deleteUser(authorId);
     }
 
