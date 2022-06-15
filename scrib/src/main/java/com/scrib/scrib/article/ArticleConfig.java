@@ -17,8 +17,8 @@
 //    CommandLineRunner commandLineRunner(ArticleRepository articleRepository){
 //        return args -> {
 //            Article momentoMori=new Article(
-//                        "Momento Mori!"
-//                    ,"Memento mori (Latin for 'remember that you [have to] die'[2]) is an artistic or symbolic trope acting as a reminder of the inevitability of death.[2] The concept has its roots in the philosophers of classical antiquity and Christianity."
+//                        "Momento Mori!2"
+//                    ,"Memento mori (Latin for 'remember that you [have to] die'[2]) is an artistic or symbolic trope acting a...2"
 //                    , LocalDate.of(2021, Month.JULY,23)
 //                    ,List.of("https://en.wikipedia.org/wiki/Memento_mori")
 //            );

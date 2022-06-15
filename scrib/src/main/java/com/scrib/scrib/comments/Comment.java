@@ -51,9 +51,11 @@ public class Comment {
         this.article = article;
     }
 
-    public Comment(String body, LocalDate creationDate) {
+    public Comment(String body, LocalDate creationDate, User user, Article article) {
         this.body = body;
         this.creationDate = creationDate;
+        this.user = user;
+        this.article = article;
     }
 
     public Long getId() {

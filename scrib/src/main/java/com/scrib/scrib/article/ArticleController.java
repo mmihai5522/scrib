@@ -29,7 +29,7 @@ public class ArticleController {
     }
 
     @DeleteMapping(path = "{articleId}")
-    public void deleteUser(@PathVariable("articleId") Long articleId){
+    public void deleteArticleById(@PathVariable("articleId") Long articleId){
         articleService.deleteArticle(articleId);
     }
 

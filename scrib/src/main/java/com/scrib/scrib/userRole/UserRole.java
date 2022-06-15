@@ -1,5 +1,7 @@
 package com.scrib.scrib.userRole;
 
+import com.scrib.scrib.role.Role;
+
 import javax.persistence.*;
 
 
@@ -25,12 +27,12 @@ public class UserRole {
 
     public UserRole(){}
 
-    public UserRole(Long id) {
-        this.id = id;
-    }
-
     public UserRole(Long id, Long role_id) {
         this.id = id;
+        this.role_id = role_id;
+    }
+
+    public UserRole(Long role_id) {
         this.role_id = role_id;
     }
 

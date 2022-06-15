@@ -1,5 +1,6 @@
 //package com.scrib.scrib.user;
 //
+//import com.scrib.scrib.userRole.UserRole;
 //import org.springframework.boot.CommandLineRunner;
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
@@ -15,23 +16,23 @@
 //    @Bean
 //    CommandLineRunner commandLineRunner(UserRepository repository){
 //
-//
+//        UserRole userRole=new UserRole(1L);
 //        return args -> {
 //                User andrei= new User(
-//                        "fgdfgdfg",
-//                        "dfgdfgdfg",
+//                        "fgdfgdfg2",
+//                        "dfgdfgdfg2",
 //                        LocalDate.of(1993, Month.SEPTEMBER,13),
-//                        "sdfsdfsdfsdf@yahoo.com",
-//                        "lorem ipsum.............",
+//                        "sdfsdfsdfsdf@yahoo.com2",
+//                        "lorem ipsum.............2",
 //                        List.of()
 //                );
 //
 //                User atesz= new User(
-//                        "Tuzson",
-//                        "Attila",
+//                        "Tuzson2",
+//                        "Attila2",
 //                        LocalDate.of(1970, Month.MAY,25),
-//                        "jiouty@yahoo.com",
-//                        "since 1990....",
+//                        "jiouty1@yahoo.com2",
+//                        "since 1990....2",
 //                        List.of()
 //                );
 //
