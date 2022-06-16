@@ -1,11 +1,13 @@
 package com.scrib.scrib.comments;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.scrib.scrib.article.Article;
 import com.scrib.scrib.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name = "comments")
 public class Comment {

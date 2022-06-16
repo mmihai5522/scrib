@@ -18,7 +18,7 @@ public class CommentController {
     }
 
 
-    @GetMapping
+    @GetMapping(path = "all")
     public List<Comment> getComments() {
         return commentService.getComments();
     }

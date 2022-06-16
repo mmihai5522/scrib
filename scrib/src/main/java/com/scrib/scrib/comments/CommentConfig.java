@@ -18,28 +18,28 @@
 //    @Bean
 //    CommandLineRunner commandLineRunner(CommentRepository commentRepository){
 //
-//        UserRole userRole=new UserRole(1L);
-//
-//        User Adminul=new User(
-//                "alibaba6",
-//                "alibaba6",
-//                LocalDate.of(1998, Month.SEPTEMBER,13),
-//                "saaaa6@yahoo.com",
-//                "bla bla5",
-//                List.of(userRole)
-//        );
-//
-//        Article theArticle=new Article("Proba 6!"
-//                ,"Memento mori (Latin for 'remember that you [have to] die'[2])."
-//                ,LocalDate.now()
-//                ,List.of("https://www.youtube.com/"));
-//
 //        return args -> {
 //
+//            UserRole userRole=new UserRole(1L);
+//
+//            User admin=new User(
+//                    "alibaba9",
+//                    "alibaba9",
+//                    LocalDate.now(),
+//                    "saaaa9@yahoo.com",
+//                    "bla bla9",
+//                    List.of(userRole)
+//            );
+//
+//            Article theArticle=new Article("Proba 9!"
+//                    ,"Memento mori (Latin for 'remember that you [have to] die'[2])."
+//                    ,LocalDate.now()
+//                    ,List.of("https://www.youtube.com/"));
+//
 //                Comment opinion=new Comment(
-//                    "foarte tare6"
+//                    "foarte tare9"
 //                        , LocalDate.now()
-//                        , Adminul
+//                        , admin
 //                        ,theArticle);
 //
 //            commentRepository.save(opinion);

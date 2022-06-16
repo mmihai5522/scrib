@@ -17,23 +17,24 @@
 //    CommandLineRunner commandLineRunner(UserRepository repository){
 //
 //        UserRole userRole=new UserRole(1L);
+//
 //        return args -> {
 //                User andrei= new User(
-//                        "fgdfgdfg2",
-//                        "dfgdfgdfg2",
+//                        "fgdfgdfg3",
+//                        "dfgdfgdfg3",
 //                        LocalDate.of(1993, Month.SEPTEMBER,13),
 //                        "sdfsdfsdfsdf@yahoo.com2",
 //                        "lorem ipsum.............2",
-//                        List.of()
+//                        List.of(userRole)
 //                );
 //
 //                User atesz= new User(
-//                        "Tuzson2",
-//                        "Attila2",
+//                        "Tuzson3",
+//                        "Attila3",
 //                        LocalDate.of(1970, Month.MAY,25),
-//                        "jiouty1@yahoo.com2",
-//                        "since 1990....2",
-//                        List.of()
+//                        "jiouty1@yahoo.com3",
+//                        "since 1990....3",
+//                        List.of(userRole)
 //                );
 //
 //                repository.saveAll(
