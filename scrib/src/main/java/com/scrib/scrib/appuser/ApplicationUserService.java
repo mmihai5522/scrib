@@ -70,10 +70,10 @@ public class ApplicationUserService implements UserDetailsService {
     public ApplicationUser register(String firstName
             , String lastName, String userName, String email) throws UserNotFoundException, EmailExistException, UserNameExistsException {
 
-        ApplicationUser user = new ApplicationUser();
-     try {
-         validatenewApplicationUserNameandEmail(EMPTY, userName, email);
 
+
+         validatenewApplicationUserNameandEmail(EMPTY, userName, email);
+        ApplicationUser user = new ApplicationUser();
          user.setUserId(setApplicationUserId());
          String password = generatePassword();
          String encodedPassword = encodePassword(password);
@@ -91,9 +91,7 @@ public class ApplicationUserService implements UserDetailsService {
          LOGGER.info("New user password: " + password);
          applicationUserRepository.save(user);
 
-     }catch (Exception e){
-         e.toString();
-     }
+
 
         return user;
     }
