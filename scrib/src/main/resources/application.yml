@@ -1,6 +1,11 @@
+jwt:
+  secret: 3zMPZReQa[z'e>"b>kqZe&j{*HED!3)wkc#w4Bht=F}L%tZ+74Fczu<8/>-,%*6~DN\$F<nJbmm/TNAG^)5N%}>t;5?=BbY"#`mv
+
 server:
    error:
     include-message: always
+#    whitelabel:
+#      enabled: false
 
 spring:
   datasource:
@@ -18,3 +23,7 @@ spring:
         jdbc:
           lob:
             non_contextual_creation=true: true
+#  mvc:
+#    throw-exception-if-no-handler-found: true
+#  resources:
+#    add-mappings: false
