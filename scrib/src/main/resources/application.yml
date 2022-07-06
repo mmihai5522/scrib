@@ -1,5 +1,5 @@
 jwt:
-  secret: 3zMPZReQa[z'e>"b>kqZe&j{*HED!3)wkc#w4Bht=F}L%tZ+74Fczu<8/>-,%*6~DN\$F<nJbmm/TNAG^)5N%}>t;5?=BbY"#`mv
+  secret: 3zMPZReQa
 
 server:
    error:

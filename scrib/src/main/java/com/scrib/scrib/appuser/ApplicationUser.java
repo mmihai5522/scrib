@@ -1,14 +1,13 @@
 package com.scrib.scrib.appuser;
 
 import lombok.*;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
+
 
 @Entity
 @ToString
@@ -48,18 +47,18 @@ public class ApplicationUser implements Serializable {
     private String email;
     @Enumerated(EnumType.STRING)
     private ApplicationUserRole applicationUserRole;
-    @ElementCollection(targetClass=String.class)
-    private Set<ApplicationUserPermission> authorithies;// Admin- can delete,create,update-- user: read,edit
 //    @ElementCollection(targetClass=String.class)
-   // private String[] authorities;
-    private Boolean locked;
+//    private Set<ApplicationUserPermission> authorithies;// Admin- can delete,create,update-- user: read,edit
+//    @ElementCollection(targetClass=String.class)
+    private String[] authorities;
+    private Boolean notLocked;
     private Boolean enabled;
 
     public ApplicationUser(String firstName, String lastName, String password, String userId
             , String userName, String imageUrl, @Nullable Date joinDate
             , @Nullable Date lastLoginDate, Date lastLoginDateDisplay, String email
-            , ApplicationUserRole applicationUserRole, Set<ApplicationUserPermission> authorithies
-            , Boolean locked, Boolean enabled) {
+            , ApplicationUserRole applicationUserRole, String[] authorities
+            , Boolean notLocked, Boolean enabled) {
         this.userId=userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -71,14 +70,14 @@ public class ApplicationUser implements Serializable {
         this.lastLoginDateDisplay = lastLoginDateDisplay;
         this.email = email;
         this.applicationUserRole = applicationUserRole;
-        this.authorithies = authorithies;
-        this.locked = locked;
+        this.authorities = authorities;
+        this.notLocked = notLocked;
         this.enabled = enabled;
 
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setAuthorities(String[] authorities) {
+        this.authorities = authorities;
     }
 
     public Long getId() {
@@ -87,6 +86,14 @@ public class ApplicationUser implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getFirstName() {
@@ -169,20 +176,16 @@ public class ApplicationUser implements Serializable {
         this.applicationUserRole = applicationUserRole;
     }
 
-    public Set<ApplicationUserPermission> getAuthorithies() {
-        return authorithies;
+    public String[] getAuthorities() {
+        return authorities;
     }
 
-    public void setAuthorithies(Set<ApplicationUserPermission> authorithies) {
-        this.authorithies = authorithies;
+    public Boolean getNotLocked() {
+        return notLocked;
     }
 
-    public Boolean getLocked() {
-        return locked;
-    }
-
-    public void setLocked(Boolean locked) {
-        this.locked = locked;
+    public void setNotLocked(Boolean notLocked) {
+        this.notLocked = notLocked;
     }
 
     public Boolean getEnabled() {

@@ -7,15 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-@Transactional(readOnly = true)
+@Transactional
 public interface ApplicationUserRepository extends JpaRepository<ApplicationUser,Long> {
 
-    ApplicationUser findApplicationUserByuserName(String name);
+    ApplicationUser findApplicationUserByUserName(String name);
 
     ApplicationUser findApplicationUserByEmail(String email);
-
-//    ApplicationUser register(String firstName
-//    , String lastName, String userName, String email);
 
     @Override
     List<ApplicationUser> findAll();

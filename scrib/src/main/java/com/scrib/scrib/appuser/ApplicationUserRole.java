@@ -1,41 +1,31 @@
 package com.scrib.scrib.appuser;
 
 import com.google.common.collect.Sets;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static com.scrib.scrib.appuser.ApplicationUserPermission.*;
 
 public enum ApplicationUserRole {
 
-    ADMIN(Sets.newHashSet(USER_AUTHORITIES
+    ADMIN(String.valueOf(Sets.newHashSet(USER_AUTHORITIES
             ,USER_HANDLER_AUTHORITIES
-            ,USER_ADMIN_AUTHORITIES))
-    , BLOGGER(Sets.newHashSet(USER_AUTHORITIES
-            ,USER_HANDLER_AUTHORITIES))
-    ,ANNOTATOR(Sets.newHashSet(USER_AUTHORITIES
-            ,USER_HANDLER_AUTHORITIES));
+            ,USER_ADMIN_AUTHORITIES)))
+    , BLOGGER(String.valueOf(Sets.newHashSet(USER_AUTHORITIES
+            ,USER_HANDLER_AUTHORITIES)))
+    ,ANNOTATOR(String.valueOf(Sets.newHashSet(USER_AUTHORITIES
+            ,USER_HANDLER_AUTHORITIES)));
 
-    private final Set<ApplicationUserPermission> permissions;
+    private final String[] permissions;
 
-    ApplicationUserRole(Set<ApplicationUserPermission> permissions) {
+    ApplicationUserRole(String... permissions) {
         this.permissions = permissions;
     }
 
-    public Set<ApplicationUserPermission> getPermissions() {
+    public String[] getPermissions() {
         return permissions;
     }
 
-    public Set<SimpleGrantedAuthority> grantedAuthority(){
-        Set<SimpleGrantedAuthority> authorities = getPermissions()
-                .stream()
-                .map((permission -> new SimpleGrantedAuthority(permission.getPermission())))
-                .collect(Collectors.toSet());
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
-        return authorities;
+    public String[] grantedAuthority(){
+        return permissions;
     }
 
 }

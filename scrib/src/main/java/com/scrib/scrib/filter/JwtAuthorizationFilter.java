@@ -27,6 +27,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private JwtProvider jwtProvider;
 
+    public JwtAuthorizationFilter(JwtProvider jwtProvider) {
+        this.jwtProvider = jwtProvider;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request
             , HttpServletResponse response

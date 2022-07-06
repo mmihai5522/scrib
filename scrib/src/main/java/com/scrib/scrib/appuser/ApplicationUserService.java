@@ -2,6 +2,7 @@ package com.scrib.scrib.appuser;
 
 
 
+import com.scrib.scrib.config.LoginAttemptCacheService;
 import com.scrib.scrib.exception.domain.EmailExistException;
 import com.scrib.scrib.exception.domain.UserNameExistsException;
 import com.scrib.scrib.exception.domain.UserNotFoundException;
@@ -23,6 +24,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 import static com.scrib.scrib.constant.ApplicationUserConstant.*;
 
@@ -36,41 +39,63 @@ public class ApplicationUserService implements UserDetailsService {
     private Logger LOGGER= LoggerFactory.getLogger(ApplicationUserService.class);
     private final ApplicationUserRepository applicationUserRepository;
     private BCryptPasswordEncoder passwordEncoder;
+    private LoginAttemptCacheService loginAttemptCacheService;
 
     @Autowired
-    public ApplicationUserService(ApplicationUserRepository applicationUserRepository,BCryptPasswordEncoder passwordEncoder ) {
+    public ApplicationUserService(ApplicationUserRepository applicationUserRepository
+            , BCryptPasswordEncoder passwordEncoder, LoginAttemptCacheService loginAttemptCacheService) {
         this.applicationUserRepository = applicationUserRepository;
-        this.passwordEncoder=passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
+        this.loginAttemptCacheService = loginAttemptCacheService;
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         ApplicationUser applicationUser = applicationUserRepository
-                .findApplicationUserByuserName(username);
+                .findApplicationUserByUserName(username);
         if (applicationUser == null) {
-            LOGGER.error("error: " + username);
-            throw new UsernameNotFoundException("Non valid user!");
+            LOGGER.error(NO_USER_FOUND_BY_USERNAME+ username);
+            throw new UsernameNotFoundException(NO_USER_FOUND_BY_USERNAME + username);
         } else {
+            validateLoginAttempt(applicationUser);
             applicationUser.setLastLoginDateDisplay(applicationUser.getLastLoginDate());
             applicationUser.setLastLoginDate(new Date());
             applicationUserRepository.save(applicationUser);
             ApplicationUserPrincipal applicationUserPrincipal =
                     new ApplicationUserPrincipal(applicationUser);
-            LOGGER.info("Found: " + username);
+            LOGGER.info(FOUND_USER_BY_USERNAME + username);
             return applicationUserPrincipal;
         }
     }
 
+    private void validateLoginAttempt(ApplicationUser applicationUser) {
+        if (applicationUser.getNotLocked()){
+            if (loginAttemptCacheService.hasExceededMaxAttempt(applicationUser.getUserName())){
+                applicationUser.setNotLocked(false);
+            }else {
+                applicationUser.setNotLocked(true);
+            }
+        }else {
+            loginAttemptCacheService.evictFromCache(applicationUser.getUserName());
+        }
+    }
 
     public ApplicationUser findApplicationUserByEmail(String email){
         return  applicationUserRepository.findApplicationUserByEmail(email);}
 
 
+    public ApplicationUser findApplicationUserByUserName(String username){
+        return  applicationUserRepository.findApplicationUserByUserName(username);}
+
+
+    public List<ApplicationUser> getUsers(){
+        return applicationUserRepository.findAll();
+    }
 
     public ApplicationUser register(String firstName
-            , String lastName, String userName, String email) throws UserNotFoundException, EmailExistException, UserNameExistsException {
-
-
+            , String lastName, String userName, String email)
+            throws UserNotFoundException, EmailExistException, UserNameExistsException {
 
          validatenewApplicationUserNameandEmail(EMPTY, userName, email);
         ApplicationUser user = new ApplicationUser();
@@ -84,39 +109,28 @@ public class ApplicationUserService implements UserDetailsService {
          user.setJoinDate(new Date());
          user.setPassword(encodedPassword);
          user.setEnabled(true);
-         user.setLocked(false);
+         user.setNotLocked(false);
          user.setApplicationUserRole(ApplicationUserRole.valueOf(ApplicationUserRole.ANNOTATOR.name()));
-         user.setAuthorithies(ApplicationUserRole.ANNOTATOR.getPermissions());
+         user.setAuthorities(ApplicationUserRole.ANNOTATOR.getPermissions());
          user.setImageUrl(getTemporaryProfileImageUrl());
-         LOGGER.info("New user password: " + password);
+         LOGGER.info("new User: " + "\r" + password + "\r");
          applicationUserRepository.save(user);
-
-
 
         return user;
     }
 
-    public String getTemporaryProfileImageUrl() {
-        return ServletUriComponentsBuilder.fromCurrentContextPath().path(DEFAULT_USER_IMAGE_PATH).toUriString();
 
-    }
-
-    public String encodePassword(String password) {
-        return passwordEncoder.encode(password);
-    }
-
-    private String generatePassword() {return RandomStringUtils.randomAlphanumeric(10);}
 
     public ApplicationUser validatenewApplicationUserNameandEmail
             (String currentUsername, String newUsername, String newEmail)
             throws UsernameNotFoundException, UserNotFoundException, UserNameExistsException, EmailExistException {
 
-        ApplicationUser userByNewUsername = applicationUserRepository.findApplicationUserByuserName(newUsername);
+        ApplicationUser userByNewUsername = applicationUserRepository.findApplicationUserByUserName(newUsername);
         ApplicationUser userByNewEmail = applicationUserRepository.findApplicationUserByEmail(newEmail);
 
 
         if(StringUtils.isNotBlank(currentUsername)) {
-            ApplicationUser currentUser = applicationUserRepository.findApplicationUserByuserName(currentUsername);
+            ApplicationUser currentUser = applicationUserRepository.findApplicationUserByUserName(currentUsername);
             if(currentUser == null) {
                 throw new UserNotFoundException(NO_USER_FOUND_BY_USERNAME + currentUsername);
             }
@@ -138,9 +152,20 @@ public class ApplicationUserService implements UserDetailsService {
         }
     }
 
-    public String setApplicationUserId() {
-        return RandomStringUtils.randomNumeric(10);
+    private String setApplicationUserId() {
+        return UUID.randomUUID().toString();
     }
+
+    private String getTemporaryProfileImageUrl() {
+        return ServletUriComponentsBuilder
+                .fromCurrentContextPath().path(DEFAULT_USER_IMAGE_PATH).toUriString();
+
+    }
+
+    private String encodePassword(String password) {
+        return passwordEncoder.encode(password);
+    }
+    private String generatePassword() {return RandomStringUtils.randomAlphanumeric(10);}
 
 }
 
