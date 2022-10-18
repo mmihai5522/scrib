@@ -23,7 +23,50 @@ spring:
         jdbc:
           lob:
             non_contextual_creation=true: true
-#  mvc:
-#    throw-exception-if-no-handler-found: true
-#  resources:
-#    add-mappings: false
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 377541162398-8avstnqnro664agdjrk4km8siekkpe0v.apps.googleusercontent.com
+            clientSecret: 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
+            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - profil
+#  app:
+#    auth:
+#    tokenSecret: 04ca023b39512e46d0c2cf4b48d5aac61d34302994c87ed4eff225dcf3b0a218739f3897051a057f9b846a69ea2927a587044164b7bae5e1306219d50b588cb1
+#    tokenExpirationMsec: 864000000
+#    cors:
+#      allowedOrigins: http://localhost:3000 # Comma separated list of allowed origins
+#      oauth2:
+#        # After successfully authenticating with the OAuth2 Provider,
+#        # we'll be generating an auth token for the user and sending the token to the
+#        # redirectUri mentioned by the client in the /oauth2/authorize request.
+#        # We're not using cookies because they won't work well in mobile clients.
+#        authorizedRedirectUris:
+#          - http://localhost:3000/oauth2/redirect
+#          - myandroidapp://oauth2/redirect
+#          - myiosapp://oauth2/redirect
+##  mvc:
+##    throw-exception-if-no-handler-found: true
+##  resources:
+##    add-mappings: false
+  mail:
+    host: localhost
+    port: 1025
+    username: hello
+    password: hello
+
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000

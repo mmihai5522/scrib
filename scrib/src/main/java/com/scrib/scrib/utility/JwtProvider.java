@@ -32,7 +32,6 @@ public class JwtProvider {
     private String secret;
 
     public String generateJwtToken(ApplicationUserPrincipal userPrincipal){
-
         String[] claims=getClaimsFromUser(userPrincipal);
         return JWT.create().withIssuer(GET_ARRAYS_TOKEN)
                 .withAudience(GET_ARRAYS_ADMINISTRATION)
@@ -46,7 +45,6 @@ public class JwtProvider {
 
     public List<GrantedAuthority> getAuthorities(String token){
         String[] claims=getClaimsFromToken(token);
-
         return stream(claims).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
@@ -100,7 +98,6 @@ public class JwtProvider {
     }
 
     private String[] getClaimsFromUser(ApplicationUserPrincipal userPrincipal) {
-
         List<String> authorities=new ArrayList<>();
         for (GrantedAuthority granted: userPrincipal.getAuthorities()) {
             authorities.add(granted.getAuthority());

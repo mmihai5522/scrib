@@ -1,7 +1,9 @@
 package com.scrib.scrib.filter;
 
+import com.scrib.scrib.appuser.ApplicationUserService;
 import com.scrib.scrib.utility.JwtProvider;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -24,6 +26,9 @@ import static org.springframework.http.HttpStatus.*;
 
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
+
+    @Autowired
+    private ApplicationUserService userService;
 
     private JwtProvider jwtProvider;
 

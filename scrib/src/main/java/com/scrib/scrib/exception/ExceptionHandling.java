@@ -1,10 +1,7 @@
 package com.scrib.scrib.exception;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.scrib.scrib.exception.domain.EmailExistException;
-import com.scrib.scrib.exception.domain.EmailNotFound;
-import com.scrib.scrib.exception.domain.UserNameExistsException;
-import com.scrib.scrib.exception.domain.UserNotFoundException;
+import com.scrib.scrib.exception.domain.*;
 import com.scrib.scrib.httpentity.HttpResponse;
 import org.slf4j.*;
 import org.springframework.boot.web.servlet.error.ErrorController;

@@ -34,14 +34,14 @@ public class LoginAttemptCacheService {
     }
 
     public void addUserToCache(String username){
-        int attempt=0;
+        int attempts=0;
 
         try {
-            attempt =ATTEMPT_INCREMENT+ attemptCache.get(username);
+            attempts =ATTEMPT_INCREMENT+ attemptCache.get(username);
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        attemptCache.put(username, attempt);
+        attemptCache.put(username, attempts);
     }
 
     public boolean hasExceededMaxAttempt(String username)  {

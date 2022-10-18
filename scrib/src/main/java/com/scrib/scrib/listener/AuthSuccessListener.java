@@ -20,11 +20,12 @@ public class AuthSuccessListener {
     }
 
     @EventListener
-    public void AonAuthSuccessful(JaasAuthenticationSuccessEvent event){
+    public void onAuthSuccessful(JaasAuthenticationSuccessEvent event){
+
         Object principal=event.getAuthentication().getPrincipal();
-        if (principal instanceof ApplicationUser){
+        if (principal instanceof ApplicationUserPrincipal){
             ApplicationUserPrincipal user =(ApplicationUserPrincipal) event.getAuthentication().getPrincipal();
-            attemptCacheService.evictFromCache(((ApplicationUser) principal).getUserName());
+            attemptCacheService.evictFromCache(((ApplicationUserPrincipal) principal).getUsername());
         }
     }
 }

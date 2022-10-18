@@ -13,16 +13,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+
+import javax.mail.MessagingException;
+import java.util.Map;
 
 import static com.scrib.scrib.constant.SecurityConstant.JWT_TOKEN_HEADER;
 import static org.springframework.http.HttpStatus.*;
 
 
 @RestController
-@RequestMapping(path = {"/","/user"})
+@RequestMapping(path = {"/user"})
 public class ApplicationUserController extends ExceptionHandling {
-    private Logger LOGGER= LoggerFactory.getLogger(ApplicationUserController.class);
+    private final Logger LOGGER= LoggerFactory.getLogger(ApplicationUserController.class);
 
     private AuthenticationManager authenticationManager;
     private ApplicationUserService applicationUserService;
@@ -35,39 +39,39 @@ public class ApplicationUserController extends ExceptionHandling {
         this.jwtProvider = jwtProvider;
     }
 
+
     @PostMapping("/login")
     public ResponseEntity<ApplicationUser> login(
             @RequestBody ApplicationUser applicationUser){
 
        authenticate(applicationUser.getUserName(), applicationUser.getPassword());
        ApplicationUser loggedUser= applicationUserService.findApplicationUserByUserName(applicationUser.getUserName());
-        System.out.println("Aicisa 1: " + loggedUser.toString());
        ApplicationUserPrincipal up=new ApplicationUserPrincipal(loggedUser);
-        System.out.println("Aicisa 2: " + up.toString());
         HttpHeaders jwtHeader=getJwtHeader(up);
-        System.out.println("Aicisa 3: " + jwtHeader.toString());
-        return new ResponseEntity<ApplicationUser>(loggedUser,jwtHeader, OK);
+
+        return new ResponseEntity<>(loggedUser,jwtHeader, OK);
     }
 
 
 
-    @PostMapping(path = "/registering")
-    public ResponseEntity<ApplicationUser> register(
-            @RequestBody ApplicationUser applicationUser)
-            throws UserNotFoundException, EmailExistException, UserNameExistsException {
-
-            ApplicationUser newlyRegistredApplicationUser=applicationUserService
-                    .register(applicationUser.getFirstName()
-            ,applicationUser.getLastName()
-            ,applicationUser.getUserName()
-            ,applicationUser.getEmail());
-
-            return new ResponseEntity<ApplicationUser>(newlyRegistredApplicationUser, OK);
-    }
+//    @PostMapping(path = "/register")
+//    public ResponseEntity<ApplicationUser> register(
+//            @RequestBody ApplicationUser applicationUser)
+//            throws UserNotFoundException, EmailExistException, UserNameExistsException, MessagingException {
+//
+//            ApplicationUser newlyRegisteredApplicationUser=applicationUserService
+//                    .usersRegister(applicationUser.getFirstName()
+//            ,applicationUser.getLastName()
+//            ,applicationUser.getUserName()
+//            ,applicationUser.getEmail()
+//            ,applicationUser.getPassword());
+//
+//            return new ResponseEntity<ApplicationUser>(newlyRegisteredApplicationUser, OK);
+//    }
 
     @GetMapping (path = "/fetching")
     public ApplicationUser fetchUser(@RequestBody ApplicationUser applicationUse){
-        ApplicationUser u=applicationUserService.findApplicationUserByEmail("mmihai5522@yahoo.com");
+        ApplicationUser u=applicationUserService.findApplicationUserByEmail(applicationUse.getEmail());
         System.out.println(u.toString());
         return u;
     }
@@ -86,7 +90,6 @@ public class ApplicationUserController extends ExceptionHandling {
     }
 
     public void authenticate(String userName, String password) {
-        LOGGER.info("Header");
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userName, password));
     }

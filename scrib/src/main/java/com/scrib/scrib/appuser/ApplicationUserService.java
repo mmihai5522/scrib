@@ -7,7 +7,6 @@ import com.scrib.scrib.exception.domain.EmailExistException;
 import com.scrib.scrib.exception.domain.UserNameExistsException;
 import com.scrib.scrib.exception.domain.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,19 +35,24 @@ import static com.scrib.scrib.constant.ApplicationUserConstant.*;
 @Qualifier("userDetailsService")
 public class ApplicationUserService implements UserDetailsService {
 
-    private Logger LOGGER= LoggerFactory.getLogger(ApplicationUserService.class);
-    private final ApplicationUserRepository applicationUserRepository;
-    private BCryptPasswordEncoder passwordEncoder;
+    private  Logger  LOGGER= LoggerFactory.getLogger(ApplicationUserService.class);
+    private  ApplicationUserRepository applicationUserRepository;
+    private  BCryptPasswordEncoder passwordEncoder;
     private LoginAttemptCacheService loginAttemptCacheService;
+
+
 
     @Autowired
     public ApplicationUserService(ApplicationUserRepository applicationUserRepository
-            , BCryptPasswordEncoder passwordEncoder, LoginAttemptCacheService loginAttemptCacheService) {
+            , BCryptPasswordEncoder passwordEncoder
+            , LoginAttemptCacheService loginAttemptCacheService
+            ) {
         this.applicationUserRepository = applicationUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.loginAttemptCacheService = loginAttemptCacheService;
-    }
 
+
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -93,14 +97,18 @@ public class ApplicationUserService implements UserDetailsService {
         return applicationUserRepository.findAll();
     }
 
-    public ApplicationUser register(String firstName
-            , String lastName, String userName, String email)
-            throws UserNotFoundException, EmailExistException, UserNameExistsException {
+    public ApplicationUser usersRegister(String firstName
+            , String lastName
+            , String userName, String email
+            , String password)
+            throws UserNotFoundException, EmailExistException
+            , UserNameExistsException {
 
          validatenewApplicationUserNameandEmail(EMPTY, userName, email);
+
         ApplicationUser user = new ApplicationUser();
+
          user.setUserId(setApplicationUserId());
-         String password = generatePassword();
          String encodedPassword = encodePassword(password);
          user.setFirstName(firstName);
          user.setLastName(lastName);
@@ -109,11 +117,10 @@ public class ApplicationUserService implements UserDetailsService {
          user.setJoinDate(new Date());
          user.setPassword(encodedPassword);
          user.setEnabled(true);
-         user.setNotLocked(false);
+         user.setNotLocked(true);
          user.setApplicationUserRole(ApplicationUserRole.valueOf(ApplicationUserRole.ANNOTATOR.name()));
          user.setAuthorities(ApplicationUserRole.ANNOTATOR.getPermissions());
          user.setImageUrl(getTemporaryProfileImageUrl());
-         LOGGER.info("new User: " + "\r" + password + "\r");
          applicationUserRepository.save(user);
 
         return user;
@@ -165,7 +172,11 @@ public class ApplicationUserService implements UserDetailsService {
     private String encodePassword(String password) {
         return passwordEncoder.encode(password);
     }
-    private String generatePassword() {return RandomStringUtils.randomAlphanumeric(10);}
+
+    public int enableAppUser(String email) {
+
+        return applicationUserRepository.enableAppUser(email);
+    }
 
 }
 
